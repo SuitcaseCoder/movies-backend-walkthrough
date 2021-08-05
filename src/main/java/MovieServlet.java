@@ -11,13 +11,14 @@ import java.io.PrintWriter;
 
 @WebServlet(name = "MovieServlet", urlPatterns = "/movies")
 public class MovieServlet extends HttpServlet {
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response){
       response.setContentType("application/json");
+      PrintWriter out;
     
         try {
-            PrintWriter out = response.getWriter();
+            out = response.getWriter();
             Movie movie = new Movie( "The Parent Trap", "1997", "Nobody Knows", "Lindsey Lohan", "12345", "would use as decoration", "the best", "Girl finds out she's a twin. Switches places. Best movie ever.", 4);
             
             String movieString = new Gson().toJson(movie);
@@ -30,8 +31,9 @@ public class MovieServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response){
         response.setContentType(("application/json"));
-        
+        PrintWriter out = null;
         try{
+            out = response.getWriter();
 //        get the reader off the request
 //            get reader returns a BufferedReader object
 //            BufferedReader is an existing class
@@ -60,5 +62,8 @@ public class MovieServlet extends HttpServlet {
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
+        
+        // write a meaningful response body and set the status code to 200
+        out.println(new Gson().toJson("{message: \"Movies PoST was successful\"}"));
     }
 }
