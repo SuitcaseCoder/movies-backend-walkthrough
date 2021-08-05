@@ -55,8 +55,6 @@ public class MovieServlet extends HttpServlet {
                 System.out.println(movie.getImdbID());
                 System.out.println(movie.getPlot());
                 System.out.println("*************************");
-    
-    
             }
             
         }catch(Exception e){
@@ -64,6 +62,69 @@ public class MovieServlet extends HttpServlet {
         }
         
         // write a meaningful response body and set the status code to 200
-        out.println(new Gson().toJson("{message: \"Movies PoST was successful\"}"));
+        out.println(new Gson().toJson("{message: \"Movies Post was successful\"}"));
+        response.setStatus(200);
     }
+    
+    
+//    DO PUT
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response){
+        response.setContentType("application/json");
+        
+        PrintWriter out = null;
+        
+        try{
+            
+            out = response.getWriter();
+            BufferedReader reader = request.getReader();
+            
+            Movie[] movies = new Gson().fromJson(reader, Movie[].class);
+    
+            for(Movie movie: movies){
+                System.out.println(movie.getId());
+                System.out.println(movie.getTitle());
+                System.out.println(movie.getActors());
+                System.out.println(movie.getDirector());
+                System.out.println(movie.getGenre());
+                System.out.println(movie.getPoster());
+                System.out.println(movie.getImdbID());
+                System.out.println(movie.getPlot());
+                System.out.println("*************************");
+            }
+            
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        
+        out.println(new Gson().toJson("message: \"Movies PUT was a success\"}"));
+        response.setStatus(200);
+    }
+    
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response){
+        response.setContentType("application/json");
+        
+        PrintWriter out = null;
+        
+        try{
+            out = response.getWriter();
+            
+            BufferedReader reader = request.getReader();
+            
+//            extract a character that can be an integer and cast it into an int
+            int id = new Gson().fromJson(reader, int.class);
+            
+//            theoretically pass this id into a data access object
+//            for now, let's sout it out for now
+            System.out.println(id);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    
+//        takes care of our successful method message
+        out.println(new Gson().toJson("message: \"Movies DELETE was a success\"}"));
+        response.setStatus(200);
+    }
+    
 }
